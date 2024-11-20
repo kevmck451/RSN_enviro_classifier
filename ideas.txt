@@ -1,0 +1,9 @@
+1. Pairwise Correlation Matrix: Calculate pairwise correlations between the mean spectra of each category to see which are closely related. Higher correlations suggest similarity, while lower values indicate unique characteristics.
+
+2. Principal Component Analysis (PCA): Use PCA to reduce dimensionality, then assess the variance explained by each component. Categories with similar spectral qualities will cluster in the reduced space, making it easier to visualize relationships.
+
+3. Distribution Comparison: For each frequency bin, analyze the distribution of magnitudes across categories (e.g., Gaussianity, variance) to determine if specific bins are more or less variable per category.
+
+4. Bayesian Classification: Use Bayesian inference on spectral features to model the probability of each category, which may highlight distinguishing characteristics in a probabilistic way.
+
+5. Spectral Entropy: Calculate entropy for each frequency bin across categories. Lower entropy in certain bins might indicate unique, consistent features that differentiate a category.

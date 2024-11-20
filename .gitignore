@@ -1,0 +1,7 @@
+# ignore all wav files
+*.wav
+
+# pycharm files
+*.pyc
+
+.idea
