@@ -29,7 +29,7 @@ data_dir = '../data'
 X, y = prepare_data(data_dir)
 
 # Split into training and testing sets
-X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.3, random_state=42)
+X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.5, random_state=42)
 
 # Train classifier using Gaussian Naive Bayes
 clf = GaussianNB()
