@@ -52,6 +52,9 @@ xx, yy = np.meshgrid(
 grid_points = np.c_[xx.ravel(), yy.ravel()]
 probs = gnb.predict_proba(grid_points).reshape(xx.shape + (len(np.unique(y)),))
 
+# Define class labels
+class_labels = ['car', 'bus', 'tram', 'train']
+
 # Plot 1D Feature Distributions
 plt.figure(figsize=(12, 6))
 for class_label in np.unique(y_train):
@@ -59,8 +62,8 @@ for class_label in np.unique(y_train):
     mean, std = subset.mean(), subset.std()
     x_range = np.linspace(X[:, 0].min(), X[:, 0].max(), 100)
     gaussian = (1 / (std * np.sqrt(2 * np.pi))) * np.exp(-0.5 * ((x_range - mean) / std) ** 2)
-    plt.plot(x_range, gaussian, label=f"Class {class_label} Gaussian")
-    plt.hist(subset, bins=20, alpha=0.3, density=True, label=f"Class {class_label} Data")
+    plt.plot(x_range, gaussian, label=f"{class_labels[class_label]} Gaussian")
+    plt.hist(subset, bins=20, alpha=0.3, density=True, label=f"{class_labels[class_label]} Data")
 
 plt.title("1D Feature Distributions with Gaussian Fits (Spectral Contrast 1)")
 plt.xlabel("Spectral Contrast 1")
@@ -72,7 +75,9 @@ plt.show()
 plt.figure(figsize=(10, 8))
 plt.contourf(xx, yy, np.argmax(probs, axis=2), alpha=0.4, cmap='coolwarm')
 scatter = plt.scatter(X_train[:, 0], X_train[:, 1], c=y_train, cmap='viridis', edgecolor='k', alpha=0.7)
-plt.colorbar(scatter, label="Class")
+cbar = plt.colorbar(scatter)
+cbar.set_ticks(range(len(class_labels)))
+cbar.set_ticklabels(class_labels)
 plt.title("GNB Decision Boundaries and Training Data (Spectral Contrast)")
 plt.xlabel("Spectral Contrast 1")
 plt.ylabel("Spectral Contrast 2")
@@ -82,11 +87,12 @@ plt.show()
 fig, axes = plt.subplots(2, 2, figsize=(12, 10))
 for i, ax in enumerate(axes.ravel()):
     contour = ax.contourf(xx, yy, probs[..., i], alpha=0.7, cmap='coolwarm')
-    ax.scatter(X_train[:, 0], X_train[:, 1], c=(y_train == i), cmap='viridis', edgecolor='k', alpha=0.7)
-    ax.set_title(f"Confidence Heatmap for Class {i}")
+    scatter = ax.scatter(X_train[:, 0], X_train[:, 1], c=(y_train == i), cmap='viridis', edgecolor='k', alpha=0.7)
+    cbar = plt.colorbar(contour, ax=ax)
+    cbar.set_label("Probability")
+    ax.set_title(f"Confidence Heatmap for {class_labels[i]}")
     ax.set_xlabel("Spectral Contrast 1")
     ax.set_ylabel("Spectral Contrast 2")
-    plt.colorbar(contour, ax=ax)
 
 plt.tight_layout()
 plt.show()

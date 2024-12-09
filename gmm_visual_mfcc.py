@@ -34,9 +34,13 @@ def prepare_data(data_dir, feature_type="mfcc"):
         raise ValueError(f"Mismatch in features ({features.shape[0]}) and labels ({labels.shape[0]})")
     return features, labels
 
+
 def visualize_gmm_clusters(data_dir, feature_type="mfcc", num_components=4, zoom_multiplier=3):
     # Prepare data
     X, y = prepare_data(data_dir, feature_type=feature_type)
+
+    # Class labels
+    class_labels = ['car', 'bus', 'tram', 'train']
 
     # Reduce dimensionality to 2 for visualization if necessary
     if X.shape[1] > 2:
@@ -68,7 +72,17 @@ def visualize_gmm_clusters(data_dir, feature_type="mfcc", num_components=4, zoom
 
     # Plot data and GMM contours
     plt.figure(figsize=(12, 10))
-    plt.scatter(X_reduced[:, 0], X_reduced[:, 1], c=y, cmap='viridis', s=15, alpha=0.6, label="Data Points")
+
+    # Use the class labels for scatter plot
+    for i, label in enumerate(class_labels):
+        plt.scatter(
+            X_reduced[y == i, 0],
+            X_reduced[y == i, 1],
+            label=label,
+            s=15,
+            alpha=0.6
+        )
+
     contour = plt.contour(
         X_grid,
         Y_grid,
